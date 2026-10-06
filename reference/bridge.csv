@@ -1,0 +1,46 @@
+market,has_direct_route,direct_weight,capture_rate_train,allocation
+ARMENIA,True,1.0,0.2081,direct match
+AUSTRALIA,False,0.0,,pending: similarity prior (plan_3 B5)
+AUSTRIA,True,1.0,0.1963,direct match
+AZERBAIJAN,True,1.0,0.0753,direct match
+BAHRAIN,True,1.0,0.1576,direct match
+BELGIUM,True,1.0,1.0981,direct match
+BRAZIL,False,0.0,,pending: similarity prior (plan_3 B5)
+CANADA,True,1.0,2.6917,direct match
+CHINA,True,1.0,6.152,direct match
+CZECHIA,False,0.0,,pending: similarity prior (plan_3 B5)
+DENMARK,False,0.0,,pending: similarity prior (plan_3 B5)
+EGYPT,True,1.0,0.1187,direct match
+FINLAND,False,0.0,,pending: similarity prior (plan_3 B5)
+FRANCE,True,1.0,1.4057,direct match
+GERMANY,True,1.0,0.9094,direct match
+INDIA,True,1.0,0.1773,direct match
+IRELAND,True,1.0,0.9015,direct match
+ISRAEL,True,1.0,0.9163,direct match
+ITALY,True,1.0,0.436,direct match
+JAPAN,True,1.0,0.6544,direct match
+JORDAN,True,1.0,0.1754,direct match
+KAZAKHSTAN,True,1.0,0.4541,direct match
+KUWAIT,True,1.0,0.431,direct match
+LEBANON,True,1.0,0.194,direct match
+MEXICO,False,0.0,,pending: similarity prior (plan_3 B5)
+MOROCCO,False,0.0,,pending: similarity prior (plan_3 B5)
+NETHERLANDS,True,1.0,1.0274,direct match
+NORWAY,False,0.0,,pending: similarity prior (plan_3 B5)
+OMAN,True,1.0,0.393,direct match
+PAKISTAN,False,0.0,,pending: similarity prior (plan_3 B5)
+PHILIPPINES,True,1.0,0.5746,direct match
+POLAND,True,1.0,0.4495,direct match
+QATAR,True,1.0,0.1356,direct match
+ROMANIA,False,0.0,,pending: similarity prior (plan_3 B5)
+RUSSIAN FEDERATION,True,1.0,1.5762,direct match
+SAUDI ARABIA,True,1.0,0.348,direct match
+SOUTH AFRICA,False,0.0,,pending: similarity prior (plan_3 B5)
+SOUTH KOREA,True,1.0,1.064,direct match
+SPAIN,True,1.0,0.6052,direct match
+SWEDEN,False,0.0,,pending: similarity prior (plan_3 B5)
+SWITZERLAND,True,1.0,0.6596,direct match
+TURKEY,True,1.0,0.1125,direct match
+UNITED KINGDOM,True,1.0,0.9988,direct match
+UNITED STATES OF AMERICA,True,1.0,2.1379,direct match
+UZBEKISTAN,True,1.0,0.2442,direct match

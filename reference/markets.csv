@@ -1,0 +1,46 @@
+market,region,haul_band
+ARMENIA,Caucasus/C.Asia,medium
+AUSTRALIA,Oceania,ultra
+AUSTRIA,W.Europe,long
+AZERBAIJAN,Caucasus/C.Asia,medium
+BAHRAIN,GCC,short
+BELGIUM,W.Europe,long
+BRAZIL,LatAm,ultra
+CANADA,N.America,ultra
+CHINA,East Asia,long
+CZECHIA,E.Europe,long
+DENMARK,Nordics,long
+EGYPT,MENA,short
+FINLAND,Nordics,long
+FRANCE,W.Europe,long
+GERMANY,W.Europe,long
+INDIA,South Asia,medium
+IRELAND,W.Europe,long
+ISRAEL,MENA,short
+ITALY,W.Europe,long
+JAPAN,East Asia,long
+JORDAN,MENA,short
+KAZAKHSTAN,Caucasus/C.Asia,medium
+KUWAIT,GCC,short
+LEBANON,MENA,short
+MEXICO,N.America,ultra
+MOROCCO,MENA,short
+NETHERLANDS,W.Europe,long
+NORWAY,Nordics,long
+OMAN,GCC,short
+PAKISTAN,South Asia,medium
+PHILIPPINES,East Asia,long
+POLAND,E.Europe,long
+QATAR,GCC,short
+ROMANIA,E.Europe,long
+RUSSIAN FEDERATION,E.Europe,long
+SAUDI ARABIA,GCC,short
+SOUTH AFRICA,Africa,long
+SOUTH KOREA,East Asia,long
+SPAIN,W.Europe,long
+SWEDEN,Nordics,long
+SWITZERLAND,W.Europe,long
+TURKEY,MENA,short
+UNITED KINGDOM,W.Europe,long
+UNITED STATES OF AMERICA,N.America,ultra
+UZBEKISTAN,Caucasus/C.Asia,medium
