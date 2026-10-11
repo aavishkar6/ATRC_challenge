@@ -45,11 +45,11 @@
 \setlength{\parskip}{0.18em}
 
 % Fill these in before exporting the final PDF.
-\newcommand{\TeamName}{[Team name]}
-\newcommand{\MemberOne}{[Name 1]}
-\newcommand{\MemberTwo}{[Name 2]}
-\newcommand{\MemberThree}{[Name 3]}
-\newcommand{\University}{[University / universities]}
+\newcommand{\MemberOne}{Aaviskar Gautam}
+\newcommand{\MemberTwo}{Srijan Sthapit}
+\newcommand{\MemberThree}{Abdulrahman Alsharhan}
+\newcommand{\MemberFour}{Sarthak Malla}
+\newcommand{\University}{New York University Abu Dhabi \textperiodcentered{} MBZUAI}
 
 \newcommand{\kicker}[1]{{\color{Accent}\scriptsize\bfseries\MakeUppercase{#1}}\par\vspace{.16cm}}
 \newcommand{\smallnote}[1]{{\color{Muted}\scriptsize #1}}
@@ -72,7 +72,7 @@
       \kicker{Executive summary}
       We built an offline simulator for the markets that already have flights. Change the flights, seats, load factor or connecting share. The simulator shows the change in hotel demand.
 
-      We held back June--July 2025. Error per nationality fell from \strong{35.0\%} to \strong{27.7\%}. The \strong{35.0\%} comes from a calendar model with no flight data. The slider response still needs a causal test.
+      On held-back June--July 2025, adding flight data to a calendar-only model cut the monthly market error from \strong{28.9\%} to \strong{23.1\%}. We also measure which levers and markets move hotel demand most.
     \end{column}
     \begin{column}{.40\linewidth}
       \begin{tikzpicture}
@@ -88,7 +88,7 @@
     \end{column}
   \end{columns}
   \vfill
-  \smallnote{Prepared by \TeamName\quad \textperiodcentered{} \University\quad \textperiodcentered{} October 2026}
+  \smallnote{\MemberOne, \MemberTwo{} (NYU Abu Dhabi) \quad\textperiodcentered{}\quad \MemberThree, \MemberFour{} (MBZUAI) \quad\textperiodcentered{}\quad October 2026}
 \end{frame}
 
 % 2. INTRO / TEAM
@@ -96,13 +96,10 @@
   \begin{columns}[T,totalwidth=\linewidth]
     \begin{column}{.50\linewidth}
       \kicker{Student team}
-      \begin{tabular}{@{}p{1.75cm}p{4.7cm}@{}}
-        \MemberOne & Data cleaning and checks \\[.20cm]
-        \MemberTwo & Models and validation \\[.20cm]
-        \MemberThree & Interface and demo \\
-      \end{tabular}
-      \vspace{.55cm}
-      \smallnote{Replace these names, these roles and the university before you submit.}
+      \strong{\MemberOne}\par{\color{Muted}\small New York University Abu Dhabi}\par\vspace{.22cm}
+      \strong{\MemberTwo}\par{\color{Muted}\small New York University Abu Dhabi}\par\vspace{.22cm}
+      \strong{\MemberThree}\par{\color{Muted}\small MBZUAI}\par\vspace{.22cm}
+      \strong{\MemberFour}\par{\color{Muted}\small MBZUAI}
     \end{column}
     \begin{column}{.46\linewidth}
       \kicker{Current status}
@@ -246,7 +243,7 @@
       \kicker{Our reading}
       \stat{7.2 points}{Less error on the months we held back.}
       \vspace{.42cm}
-      \stat{27.7\%}{Still too much error for one market on its own.}
+      \stat{23.1\% vs 28.9\%}{Error on monthly market totals: flight model vs calendar.}
     \end{column}
   \end{columns}
   \vfill
@@ -256,51 +253,59 @@
 % 8. MOCK-UP / PROTOTYPE
 \begin{frame}{A working prototype, not just a diagram}
   \begin{columns}[T,totalwidth=\linewidth]
-    \begin{column}{.53\linewidth}
+    \begin{column}{.36\linewidth}
       \kicker{What a planner can do now}
-      \begin{enumerate}\setlength\itemsep{.17cm}
+      \begin{enumerate}\footnotesize\setlength\itemsep{.04cm}
         \item Pick a market and a month.
-        \item Move one slider: flights per week, seats per flight, load factor or connecting share.
-        \item Compare your scenario with the real flights. Read the passenger steps and the demand curve.
-        \item Watch for the warning when the scenario goes past the training range.
+        \item Move a slider: flights/week, seats/flight, load factor or connecting share.
+        \item Compare with the real flights and read the passenger steps.
+        \item Watch for the warning past the training range.
       \end{enumerate}
-      \vspace{.25cm}
-      \smallnote{The prototype is one HTML file and needs no network. We check the browser math against Python.}
+      \vspace{.10cm}
+      \kicker{Example shown}
+      {\footnotesize UK, July 2025, 20\% more flights per week: \strong{46,665} guest-days vs \strong{40,152} with the real flights (\strong{+16.2\%}).}
+      \vspace{.10cm}
+
+      \smallnote{One HTML file, no network. The browser math matches Python.}
     \end{column}
-    \begin{column}{.43\linewidth}
+    \begin{column}{.60\linewidth}
       \centering
-      \IfFileExists{assets/demo_baseline.png}{%
-        \fbox{\includegraphics[height=5.65cm]{assets/demo_baseline.png}}%
+      \IfFileExists{assets/demo_scenario.png}{%
+        \fbox{\includegraphics[width=.97\linewidth]{assets/demo_scenario.png}}%
       }{\fbox{\parbox[c][5.4cm][c]{5cm}{\centering Screenshot: prototype with four sliders and prediction cards}}}
-      \par\smallnote{The HTML prototype, UK / July 2025.}
+      \par\smallnote{The HTML prototype after the ``+20\% frequency'' button.}
     \end{column}
   \end{columns}
 \end{frame}
 
 % 9. IMPACT AND FEASIBILITY
-\begin{frame}{Where this could be useful}
+\begin{frame}{What moves hotel demand, and what to do about it}
   \begin{columns}[T,totalwidth=\linewidth]
-    \begin{column}{.47\linewidth}
-      \kicker{Intended impact}
-      \begin{itemize}\setlength\itemsep{.16cm}
-        \item Show the flight and hotel assumptions in one place.
-        \item Compare scenarios for current markets before a deeper study.
-        \item Point to the months and markets that react most, for a person to review.
+    \begin{column}{.55\linewidth}
+      \small
+      \kicker{Sensitivity: what moves guests most}
+      \begin{itemize}\setlength\itemsep{.08cm}
+        \item Flights per week, seats per flight and load factor act the same way: +10\% in any one gives about $\beta_m\times$10\% more guests.
+        \item Connecting share is the strongest lever per point. In UK/July 2025, 83\% of arrivals connect onward. One point less means about 6\% more local passengers.
+        \item Markets differ more than 25 times: $\beta$ is 1.9 for Qatar and Saudi Arabia, 0.9 for the UK and 0.07 for Lebanon.
       \end{itemize}
+      \kicker{What planners can do differently}
+      Focus route support on markets with high $\beta$ and low connecting share, in their peak months. Test each case in the simulator before talks with airlines.
     \end{column}
-    \begin{column}{.49\linewidth}
+    \begin{column}{.41\linewidth}
+      \small
       \kicker{Real-life requirements}
-      \begin{itemize}\setlength\itemsep{.16cm}
-        \item Ask DCT what \emph{Guests} counts. Ask for room counts, so we can show occupancy.
-        \item Improve the link from flight origin to nationality with approved aggregate data.
-        \item Reload the source data often. Track the error by market and by season.
-        \item Keep new routes switched off until we can support them with evidence.
+      \begin{itemize}\setlength\itemsep{.08cm}
+        \item Ask DCT what \emph{Guests} counts, and for room counts to show occupancy.
+        \item Link flight origin to nationality with approved aggregate data.
+        \item Reload data often. Track error by market and season.
+        \item Keep new routes off until evidence supports them.
       \end{itemize}
     \end{column}
   \end{columns}
   \vfill
   {\color{Rule}\rule{\linewidth}{.5pt}}\par
-  \smallnote{Today the slider shows an association under the assumptions above. It is not a proven effect of adding flights.}
+  \smallnote{The slider shows an association under the stated assumptions, not a proven causal effect of adding flights.}
 \end{frame}
 
 % 10. SHORTLIST TEST PLAN + SOURCES
@@ -320,7 +325,7 @@
       We need aggregate origin--nationality flows, a guest-night definition from DCT, event dates and room counts. With those we could test more of the seats-to-visitors-to-nights chain.
 
       \vspace{.40cm}
-      \smallnote{The prototype and the notebooks are ready for a live demo. Add the team details and the video link before you submit.}
+      \smallnote{The prototype and the notebooks are ready for a live demo.}
     \end{column}
   \end{columns}
   \vfill
