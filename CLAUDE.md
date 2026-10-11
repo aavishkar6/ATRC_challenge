@@ -4,6 +4,14 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## What this repo is
 
+### Current implemented model handoff (11 October 2026)
+
+`experiments/notebooks/03_interpretable_models.ipynb` now implements the model comparison after notebook 02. These implementation facts supersede conflicting historical modeling claims below: the target is **reported Guests / guest-days**, not confirmed guest nights; Guests/New Arrivals is not identified individual length of stay; the bridge remains a same-name assumption. Training is Jan 28, 2023–Dec 2024, selection Jan–Apr 2025, error calibration May, frozen audit Jun–Jul. Never retune on that audit while calling it untouched.
+
+Five candidates select a per-market monotonic log regression (nonnegative passenger coefficient), with 7-day P2P exposure and month/weekday/trend controls. GAMs are compared with 7-day and assumed mean-4-day timing. The 12 unmatched nationalities use seasonal-only fallback. No hotel-derived input or imputed target enters training. The prototype excludes domestic demand and unsupported new routes/occupancy.
+
+Core implementation: `src/models.py`, `src/scenario.py`, `src/verify.py`. Run notebook 03 with **cursor** to regenerate `reports/models/` and the self-contained `demo/index.html`. Edit `demo/template.html`, `demo/engine.js`, `demo/ui.js`, then regenerate the HTML. `requirements-modeling.txt` extends the analysis lock; Node.js is needed for export-parity and slider-direction verification. Do not overwrite the user's saved notebooks 01/02/exploratory.
+
 A competition entry for the **Advanced Technology Pioneers 2026 (ATP2026)** challenge, DCT Abu Dhabi
 track. Source of truth for the brief:
 <https://challengeon.atrc.ae/en/challenges/atp2026/pages/dct-challenge-statement?lang=en>
@@ -70,6 +78,18 @@ assumptions and show uncertainty ranges; data is licensed for competition use on
 people (UAE university students / recent graduates).
 
 ## Commands
+
+**Current analysis update (11 Oct 2026):** `experiments/notebooks/02_domain_analysis.ipynb`
+is the research-informed, executed analysis notebook, using the `cursor` Jupyter kernel backed by
+this project's `.venv`. `requirements-analysis.in` lists direct dependencies and
+`requirements-analysis.txt` pins their dependency closure. See README for execution instructions.
+This notebook reads original spreadsheets and audits the existing panel; it preserves unknown hotel
+counts and examines infant-excluded load factors. `Guests` is described as the daily reported target,
+and its sum as reported guest-days, pending clarification of same-day overlap. The capture comparison
+is not an identified probability. Results and an input/environment manifest are generated under
+`reports/domain_analysis/`. No production GAM is fitted, and relationship analysis uses 2023–2024 only.
+The older environment and modeling notes below describe the previous cleaning-stage assumptions;
+consult the new notebook's evidence and issues tables before treating them as established facts.
 
 The environment is a `uv`-managed venv at `.venv` (Python 3.14). There is **no** `pyproject.toml` or
 root `requirements.txt` yet — packages were installed ad hoc. Installed: pandas, numpy, matplotlib,

@@ -1,0 +1,13 @@
+# Direct dependencies for the cleaning and domain-analysis notebooks.
+# requirements-analysis.txt records the fully resolved Python 3.14 environment.
+pandas
+numpy
+scipy
+statsmodels
+matplotlib
+pyarrow
+openpyxl
+nbformat
+nbclient
+ipykernel
+jupyterlab
