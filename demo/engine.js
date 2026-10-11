@@ -1,4 +1,13 @@
-/* Shared with Node verification. No network calls or dependencies. */
+/* Browser scenario engine, shared with tests/scenario.test.cjs. No network calls or dependencies.
+ *
+ * Chain used by run():
+ *   seats      = flights/week / 7 * days * seats/flight
+ *   passengers = seats * load factor * infant multiplier
+ *   P2P        = passengers * (1 - transfer/transit share)
+ * The month's observed daily P2P profile is scaled to the new total, the trailing exposure is
+ * recomputed with the earlier history fixed, and each day's baseline prediction is shifted by
+ * the model's passenger effect: (pred + 1) * exp(effect(new) - effect(old)) - 1.
+ */
 (function(root) {
   'use strict';
   function sum(a) { return a.reduce((s,x)=>s+x,0); }

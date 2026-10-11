@@ -1,4 +1,9 @@
-"""Portable scenario engine: preserve daily schedule shape and pre-scenario history."""
+"""Scenario engine and demo export.
+
+A slider scenario rescales one market's observed daily P2P passengers for a month, keeps the
+27 days of history before it unchanged, recomputes the exposure feature and re-predicts.
+demo/engine.js implements the same arithmetic in the browser; src/verify.py checks parity.
+"""
 import json
 from pathlib import Path
 
@@ -8,6 +13,7 @@ from .models import ROOT, OUT
 
 
 def exposure(p2p, feature):
+    """Trailing 7-day mean of P2P, or the 28-day geometric kernel (weights 0.75^lag)."""
     if feature == "p2p_7d":
         return np.convolve(p2p, np.ones(7) / 7, mode="full")[:len(p2p)]
     w = .75 ** np.arange(28)
@@ -15,6 +21,7 @@ def exposure(p2p, feature):
 
 
 def scenario(model, d, history, multiplier):
+    """Predict a month with P2P scaled by `multiplier`; returns (predictions, exposure)."""
     changed = d.copy()
     values = np.r_[history, d.p2p.to_numpy() * multiplier]
     changed[model.feature] = exposure(values, model.feature)[len(history):]
@@ -22,6 +29,8 @@ def scenario(model, d, history, multiplier):
 
 
 def build_payload(result):
+    """Collect, for each market and month from 2025 on, the observed flight plan (the slider
+    defaults), baseline predictions and actuals into one JSON-safe dict for the browser."""
     selected = result["summary"]["selected"]
     payload = {"summary": result["summary"], "scores": result["scores"].to_dict("records"),
                "markets": {}, "months": sorted(result["panel"].loc[result["panel"].date.ge("2025-01-01"), "date"].dt.strftime("%Y-%m").unique())}
@@ -62,6 +71,7 @@ def build_payload(result):
 
 
 def export_demo(result):
+    """Inline the engine, UI and payload into a single offline demo/index.html."""
     payload = build_payload(result)
     demo = ROOT / "demo"
     demo.mkdir(exist_ok=True)

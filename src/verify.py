@@ -1,4 +1,9 @@
-"""Integration checks on real fits, temporal boundaries and exported predictions."""
+"""Integration checks on real fits, temporal boundaries and exported predictions.
+
+Python checks every market-month (split order, seats->passengers identity, monotone and
+finite scenarios), then tests/scenario.test.cjs replays the same scenarios in the browser
+engine and asserts Python/JS parity. Results go to reports/models/verification.json.
+"""
 import json
 import subprocess
 
