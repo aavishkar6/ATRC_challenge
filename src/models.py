@@ -1,4 +1,9 @@
-"""Interpretable, temporal-holdout models. No hotel-derived predictor is used."""
+"""Interpretable, temporal-holdout models linking inbound flights to hotel Guests.
+
+One model is fitted per hotel nationality. Five candidate forms (SPECS) are compared on a
+forward time split; the simplest shape-safe candidate near the best Jan-Apr 2025 WMAPE is
+selected, then audited once on Jun-Jul 2025. No hotel-derived value is used as a predictor.
+"""
 from __future__ import annotations
 
 import hashlib
@@ -13,6 +18,7 @@ from scipy.optimize import lsq_linear
 
 ROOT = Path(__file__).resolve().parents[1]
 OUT = ROOT / "reports/models"
+# Candidate name -> (model form, passenger-exposure feature). Order = complexity rank.
 SPECS = {
     "Seasonal baseline": ("seasonal", "p2p_7d"),
     "Proportional chain": ("chain", "p2p_7d"),
@@ -52,7 +58,7 @@ def load_panel():
     kernel /= kernel.sum()
     panel["p2p_stay4"] = panel.groupby("market").p2p.transform(
         lambda x: pd.Series(np.convolve(x, kernel, mode="full")[:len(x)], index=x.index))
-    # Both candidates receive the same 28-day warm-up exclusion.
+    # Every candidate skips the first 27 days so both exposure windows are fully observed.
     panel["usable"] = panel.date.ge("2023-01-28")
     panel["month"] = panel.date.dt.month
     panel["dow"] = panel.date.dt.dayofweek
@@ -73,12 +79,17 @@ def calendar_design(d):
 
 
 class MarketModel:
+    """One nationality's model. Unlinked nationalities (no same-name flight origin) fall back
+    to the calendar-only form, so they never get an invented aviation response."""
+
     def __init__(self, kind, feature, linked):
         self.kind = kind if linked else "seasonal"
         self.feature = feature
         self.linked = linked
 
     def fit(self, d):
+        """Fit on log(1 + Guests). Linear forms use ridge-penalised bounded least squares;
+        the monotonic regression constrains its passenger coefficient to be >= 0."""
         assert d.date.max() < pd.Timestamp("2025-01-01")
         assert d.target.notna().all()
         self.train_range = [float(d[self.feature].min()), float(d[self.feature].max())]
@@ -112,6 +123,7 @@ class MarketModel:
         return np.column_stack([np.log1p(d[self.feature]), d.month, d.dow, d.time])
 
     def effect(self, exposure):
+        """Additive contribution of passenger exposure on the log scale (the response curve)."""
         exposure = np.asarray(exposure, dtype=float)
         if self.kind == "gam":
             X = np.column_stack([np.log1p(exposure), np.ones(len(exposure)), np.zeros(len(exposure)), np.zeros(len(exposure))])
@@ -121,6 +133,7 @@ class MarketModel:
         return np.zeros(len(exposure))
 
     def predict(self, d):
+        """Daily Guests forecast, retransformed with a smearing correction and floored at zero."""
         if self.kind == "chain":
             return d[self.feature].to_numpy() * d.month.map(self.ratios).to_numpy()
         if self.kind == "gam":
@@ -134,6 +147,7 @@ class MarketModel:
 
 
 def metrics(d):
+    """WMAPE per nationality-day (primary), bias, MAE, WMAPE of daily totals and median market WMAPE."""
     observed = d.dropna(subset=["target", "prediction"])
     error = observed.prediction - observed.target
     total = observed.target.sum()
@@ -146,6 +160,8 @@ def metrics(d):
 
 
 def shape_gate(model):
+    """Reject a model whose passenger response is non-finite or decreasing anywhere up to 10x
+    the training range, so no slider can ever lower demand by adding flights."""
     if not model.linked:
         return True
     x = np.expm1(np.linspace(0, np.log1p(max(model.train_range[1] * 10, 1)), 600))
@@ -156,6 +172,8 @@ def shape_gate(model):
 
 
 def run_comparison():
+    """Fit all candidates, select on Jan-Apr 2025, calibrate on May, audit on Jun-Jul and
+    write every table to reports/models/."""
     OUT.mkdir(parents=True, exist_ok=True)
     panel, hashes = load_panel()
     fits, predictions, rows, gates = {}, [], [], []
